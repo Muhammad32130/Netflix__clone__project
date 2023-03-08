@@ -1,17 +1,35 @@
-import { PlusIcon, ThumbUpIcon, XIcon } from "@heroicons/react/solid"
+import { CheckIcon, PlusIcon, ThumbUpIcon, XIcon } from "@heroicons/react/solid"
 import MuiModal from "@mui/material/Modal"
+import { collection, deleteDoc, doc, DocumentData, onSnapshot, setDoc } from "firebase/firestore"
 import { useEffect, useState } from "react"
+import toast, { Toaster } from "react-hot-toast"
 import { FaPlay } from "react-icons/fa"
 import ReactPlayer from "react-player/lazy"
 import {useRecoilValue, useRecoilState} from "recoil"
 import { modalState, movieState } from "../atoms/modalAtoms"
-import {Element, Genre} from '../typings'
+import { db } from "../firebase"
+import useAuth from "../hooks/useAuth"
+import {Element, Genre, Movie} from '../typings'
 
 function Modal() {
     const [showModal, setshowModal] = useRecoilState(modalState)
     const [movie, setMovie] = useRecoilState(movieState)
     const [trailer, settrailer]=useState("")
     const [genres, setgenres]=useState<Genre[]>([])
+    const {user}= useAuth()
+    const [addedToList, setAddedToList]=useState(false)
+    const [movies, setMovies]= useState<DocumentData[]|Movie[]>([])
+
+    const toastStyle = {
+      background: 'white',
+      color: 'black',
+      fontWeight: 'bold',
+      fontSize: '16px',
+      padding: '15px',
+      borderRadius: '9999px',
+      maxWidth: '1000px',
+    }
+
 
     useEffect(() => {
         if (!movie) return
@@ -39,6 +57,57 @@ function Modal() {
         fetchMovie()
       }, [movie])
     
+      useEffect(() => {
+        if (user) {
+          return onSnapshot(
+            collection(db, 'customers', user.uid, 'myList'),
+            (snapshot) => setMovies(snapshot.docs)
+          )
+        }
+      }, [db, movie?.id])
+    
+      // Check if the movie is already in the user's list
+      useEffect(
+        () =>
+          setAddedToList(
+            movies.findIndex((result) => result.data().id === movie?.id) !== -1
+          ),
+        [movies]
+      )
+
+      const handleList = async () => {
+        if (addedToList) {
+          await deleteDoc(
+            doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!)
+          )
+    
+          toast(
+            `${movie?.title || movie?.original_name} has been removed from My List`,
+            {
+              duration: 8000,
+              style: toastStyle,
+            }
+          )
+        } else {
+          await setDoc(
+            doc(db, 'customers', user!.uid, 'myList', movie?.id.toString()!),
+            {
+              ...movie,
+            }
+          )
+    
+          toast(
+            `${movie?.title || movie?.original_name} has been added to My List.`,
+            {
+              duration: 8000,
+              style: toastStyle,
+            }
+          )
+        }
+      }
+
+
+
     
     
     const handleClose = ()=>{
@@ -47,6 +116,7 @@ function Modal() {
   return (
     <MuiModal open={showModal} onClose={handleClose} className="fixed !top-7 left-0 right-0 z-50 mx-auto w-full max-w-5xl overflow-hidden overflow-y-scroll rounded-md scrollbar-hide">
         <>
+        <Toaster position="bottom-center"/>
         <button onClick={handleClose} className="modalButton absolute right-5 top-5 !z-40 h-9 w-9 border-none bg[#181818] hover:bg-[#181818]">
             <XIcon className="h-6 w-6"/>
         </button>
@@ -64,8 +134,15 @@ function Modal() {
                 <button className="flex items-center gap-x-2 rounded bg-white px-8 text-xl font-bold text-black transition hover:bg-[#e6e6e6]">
                 <FaPlay className="h-7 w-7 text-black"/>
                     Play</button>
-                    <button className="modalButton">
-                        <PlusIcon className="h-7 w-7"></PlusIcon>
+                    <button className="modalButton" onClick={handleList}>
+                      {addedToList?(
+                        <CheckIcon className="h-7 w-7"></CheckIcon>
+                        ):(
+                          <PlusIcon className="h-7 w-7"></PlusIcon>
+                        )
+
+                        
+                      }
                     </button>
                     <button className="modalButton">
                         <ThumbUpIcon className="h-7 w-7"></ThumbUpIcon>

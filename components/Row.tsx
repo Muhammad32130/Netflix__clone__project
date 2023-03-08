@@ -4,10 +4,11 @@ import { modalState, movieState } from "../atoms/modalAtoms";
 import { Movie } from "../typings";
 import Thumbnail from "./Thumbnail";
 import {useRecoilState} from 'recoil'
+import { DocumentData } from "firebase/firestore";
 
 interface Props {
   title: string;
-  movies: Movie[];
+  movies:Movie|DocumentData[]
 }
 
 function Row({ title, movies }: Props) {
