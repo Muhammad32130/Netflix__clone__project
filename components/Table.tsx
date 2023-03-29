@@ -1,35 +1,36 @@
-import { CheckIcon } from '@heroicons/react/solid'
+import { CheckIcon } from '@heroicons/react/outline'
 import { Product } from '@stripe/firestore-stripe-payments'
-import React from 'react'
 
-interface Props{
-    products: Product[]
-    selectedplan: Product | null
+interface Props {
+  products: Product[]
+  selectedPlan: Product | null
 }
 
-function Table({ products, selectedplan }: Props) {
+function Table({ products, selectedPlan }: Props) {
   return (
     <table>
-        <tbody className='divide-y divide-[gray]'>
-            <tr className='tableRow'>
-                <td className='tableDataTitle'>Monthly price</td>
-                {products.map((product)=>(
-                   <td
-                   className={`tableDataFeature ${
-                     selectedplan?.id === product.id
-                       ? 'text-[#E50914]'
-                       : 'text-[gray]'
-                   }`}
-                   key={product.id}
-                 >${(product.prices[0].unit_amount!/100).toFixed(2)}</td>
-                ))}
-            </tr>
-            <tr className="tableRow">
+      <tbody className="divide-y divide-[gray]">
+        <tr className="tableRow">
+          <td className="tableDataTitle">Monthly price</td>
+          {products.map((product) => (
+            <td
+              className={`tableDataFeature ${
+                selectedPlan?.id === product.id
+                  ? 'text-[#E50914]'
+                  : 'text-[gray]'
+              }`}
+              key={product.id}
+            >
+              AED{product.prices[0].unit_amount! / 100}
+            </td>
+          ))}
+        </tr>
+        <tr className="tableRow">
           <td className="tableDataTitle">Video quality</td>
           {products.map((product) => (
             <td
               className={`tableDataFeature ${
-                selectedplan?.id === product.id
+                selectedPlan?.id === product.id
                   ? 'text-[#E50914]'
                   : 'text-[gray]'
               }`}
@@ -44,7 +45,7 @@ function Table({ products, selectedplan }: Props) {
           {products.map((product) => (
             <td
               className={`tableDataFeature ${
-                selectedplan?.id === product.id
+                selectedPlan?.id === product.id
                   ? 'text-[#E50914]'
                   : 'text-[gray]'
               }`}
@@ -61,7 +62,7 @@ function Table({ products, selectedplan }: Props) {
           {products.map((product) => (
             <td
               className={`tableDataFeature ${
-                selectedplan?.id === product.id
+                selectedPlan?.id === product.id
                   ? 'text-[#E50914]'
                   : 'text-[gray]'
               }`}
@@ -73,7 +74,7 @@ function Table({ products, selectedplan }: Props) {
             </td>
           ))}
         </tr>
-        </tbody>
+      </tbody>
     </table>
   )
 }
