@@ -1,13 +1,12 @@
 import React from "react";
 import { Movie } from "../typings";
-import Image from "next/legacy/image";
+import Image from "next/image";
 import { useState, useEffect } from "react";
 import { baseUrl } from "../Constants/movie";
 import {FaPlay} from "react-icons/fa"
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import { modalState, movieState } from "../atoms/modalAtoms";
 import {useRecoilState} from 'recoil'
-import { randArrItem } from "e";
 interface Props {
   netflixOriginals: Movie[];
 }
@@ -18,10 +17,9 @@ function Banner({ netflixOriginals }: Props) {
   const [currentMovie, setCurrentMovie]= useRecoilState(movieState)
 
   useEffect(() => {
-    // setMovie(
-    //   netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
-    //   )
-      console.log(movie)
+    setMovie(
+      netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
+      )
     
   }, [netflixOriginals])
 

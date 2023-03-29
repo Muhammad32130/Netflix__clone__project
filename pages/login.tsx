@@ -1,6 +1,6 @@
 import { signInAnonymously } from 'firebase/auth'
 import Head from 'next/head'
-import Image from "next/legacy/image"
+import Image from "next/image"
 import { useState} from 'react'
 import { useForm } from 'react-hook-form'
 import { SubmitHandler } from 'react-hook-form/dist/types'
