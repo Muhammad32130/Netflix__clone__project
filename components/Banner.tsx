@@ -18,11 +18,10 @@ function Banner({ netflixOriginals }: Props) {
   const [currentMovie, setCurrentMovie]= useRecoilState(movieState)
 
   useEffect(() => {
-
-
     setMovie(
       randArrItem(netflixOriginals)
-    )
+      )
+      console.log(netflixOriginals)
     
   }, [netflixOriginals])
 
