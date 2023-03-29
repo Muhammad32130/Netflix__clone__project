@@ -7,6 +7,7 @@ import {FaPlay} from "react-icons/fa"
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import { modalState, movieState } from "../atoms/modalAtoms";
 import {useRecoilState} from 'recoil'
+import { randArrItem } from "e";
 interface Props {
   netflixOriginals: Movie[];
 }
@@ -17,9 +18,12 @@ function Banner({ netflixOriginals }: Props) {
   const [currentMovie, setCurrentMovie]= useRecoilState(movieState)
 
   useEffect(() => {
+
+
     setMovie(
-      netflixOriginals[Math?.floor(Math?.random() * netflixOriginals?.length)]
+      randArrItem(netflixOriginals)
     )
+    
   }, [netflixOriginals])
 
   return (
