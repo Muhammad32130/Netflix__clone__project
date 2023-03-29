@@ -19,8 +19,7 @@ import {
     error: string | null
     loading: boolean
   }
-
-const AuthContext = createContext<IAuth>({
+  const AuthContext = createContext<IAuth>({
     user: null,
     signUp: async () => {},
     signIn: async () => {},
@@ -33,8 +32,8 @@ const AuthContext = createContext<IAuth>({
   interface AuthProviderProps{
     children:React.ReactNode
   }
-
- export const AuthProvider= ({children}:AuthProviderProps) => {
+  
+  export const AuthProvider= ({children}:AuthProviderProps) => {
     const [loading, setLoading]=useState(false)
     const [user, setUser] = useState<User|null>(null)
     const [error, seterror]= useState(null)
@@ -68,7 +67,7 @@ const signUp = async(email:string, password:string)=> {
 
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential)=>{
         setUser(userCredential.user)
-        router.replace('/')
+        window.location.href=`${window.location.origin}/`
         setLoading(false)
     }
     ).catch((error)=>alert('error.message'))
@@ -82,7 +81,7 @@ const signIn = async(email:string, password:string)=> {
 
     await signInWithEmailAndPassword(auth, email, password).then((userCredential)=>{
         setUser(userCredential.user)
-        router.replace('/')
+        window.location.href=`${window.location.origin}/`
         setLoading(false)
     }
     ).catch((error)=>alert('error.message'))
