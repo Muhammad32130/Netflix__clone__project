@@ -19,9 +19,9 @@ function Banner({ netflixOriginals }: Props) {
 
   useEffect(() => {
     setMovie(
-      randArrItem(netflixOriginals)
+      netflixOriginals[Math.floor(Math.random() * netflixOriginals.length)]
       )
-      console.log(netflixOriginals)
+      console.log(movie)
     
   }, [netflixOriginals])
 
