@@ -51,7 +51,6 @@ import {
               // Not logged in...
               setUser(null)
               setLoading(true)
-              router.replace('/login')
             }
     
             setInitialLoading(false)
