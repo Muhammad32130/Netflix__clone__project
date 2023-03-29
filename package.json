@@ -16,7 +16,7 @@
     "@stripe/firestore-stripe-payments": "^0.0.6",
     "e": "^0.2.32",
     "firebase": "^9.17.1",
-    "next": "latest",
+    "next": "^13.2.4",
     "next-transpile-modules": "^10.0.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
