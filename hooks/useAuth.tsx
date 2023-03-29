@@ -52,7 +52,7 @@ const AuthContext = createContext<IAuth>({
               // Not logged in...
               setUser(null)
               setLoading(true)
-              router.push('/login')
+              router.replace('/login')
             }
     
             setInitialLoading(false)
@@ -68,7 +68,7 @@ const signUp = async(email:string, password:string)=> {
 
     await createUserWithEmailAndPassword(auth, email, password).then((userCredential)=>{
         setUser(userCredential.user)
-        router.push('/')
+        router.replace('/')
         setLoading(false)
     }
     ).catch((error)=>alert('error.message'))
@@ -82,7 +82,7 @@ const signIn = async(email:string, password:string)=> {
 
     await signInWithEmailAndPassword(auth, email, password).then((userCredential)=>{
         setUser(userCredential.user)
-        router.push('/')
+        router.replace('/')
         setLoading(false)
     }
     ).catch((error)=>alert('error.message'))
